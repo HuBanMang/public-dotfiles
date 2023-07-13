@@ -1,0 +1,79 @@
+# alias.gitconfig
+
+# ------ remote repository ------ ------ ------ ------ ------ ------ ------
+# |               ^                                       |               |
+# |clone          |push                                   |fetch          |pull(fetch+merge)
+# v               |                                       v               |reset --hard remote/branch
+# ------ local repository ------ ------ ------ ------ ------              |
+# |               ^               |                       |               |
+# |checkout HEAD  |commit [-a]    |reset HEAD [filename]  |merge/rebase   |
+# |switch [-c]    |               v restore --staged      |reset --hard   |
+# |               --- staged/index ---                    |               |
+# |               ^               |                       |               |
+# |               |add/mv/rm      |checkout filename      |               |
+# v               |               v restore filename      v               v
+# ------ workspace ------ ------ ------ ------ ------ ------ ------ ------
+# |               ^
+# |stash          |stash apply
+# v               |
+# ------ stash ------
+
+# /dotfiles/pathto/aliases.sh有更短的alias
+# alias gad='git add .'
+# alias gst='git status -bs'
+# alias gca='git commit -a'
+# alias gcs='git commit -S'
+# alias grv='git remote -v'
+# alias gpl='git pull'
+# alias gps='git push'
+# alias gcl='git clean -fdx'
+
+[alias]
+    # amend last commit
+    cm-amend = commit --amend
+    # diff Working dir and Staging area
+    df = diff
+    # diff Staging area and Repo
+    dfs = diff --staged
+    # diff HEAD~1
+    df1 = diff HEAD~1
+    # diff HEAD~2
+    df2 = diff HEAD~2
+    # view a commit
+    sh = show
+    # clean untracking files and folders
+    cl = clean -fdx
+    # reflog
+    ref = reflog
+    # log graph
+    lg = log --graph --text
+    # log oneline
+    lgo = log --oneline --graph --text
+    # log all
+    lga = log --oneline --graph --text --all
+    # log diff line numbers
+    lgs = log --oneline --graph --stat
+    # log diff line numbers all commits
+    lgsa = log --oneline --graph --stat --all
+    # log diff detail
+    lgp = log --oneline --graph --patch
+    # log search
+    lg-search = log --oneline --graph -S
+    # log search with patch
+    lg-search-patch = log --oneline --graph --patch -S
+    # git checkout
+    co = checkout
+    # git switch
+    sw = switch
+    # git bisect (bad/good/reset)
+    bs = bisect
+    # git blame
+    bl = blame
+    # git tag
+    tg = tag
+    # git tag show tag message
+    tgn = tag -n
+    # git tag annotate tag with message
+    tga = tag -a --
+    # gitweb
+    web = instaweb --httpd=apache2

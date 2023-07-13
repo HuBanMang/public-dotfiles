@@ -1,0 +1,5 @@
+# git.gitconfig
+
+[user]
+    name = git
+    email = git@noreply.localhost

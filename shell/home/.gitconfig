@@ -1,0 +1,13 @@
+# .gitconfig
+
+# ~/.gitconfig
+# ~/.config/git/config
+
+[include]
+    path = ~/dotfiles/shell/git/alias.gitconfig
+    path = ~/dotfiles/shell/git/core.gitconfig
+    path = ~/dotfiles/shell/git/gpg.gitconfig
+    path = ~/dotfiles/shell/git/proxy.gitconfig
+    path = ~/dotfiles/shell/git/user.gitconfig
+
+# [custom]

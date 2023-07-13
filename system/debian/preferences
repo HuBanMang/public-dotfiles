@@ -1,0 +1,84 @@
+# Preferences --------------------------------------------------------------{{{
+
+# ！！！不建议不同release混用！！！
+# 如果一定要混用请**提前**配置好合理的`/etc/apt/preferences`！之后再启用testing/unstable
+# 或者使用`echo 'APT::Default-Release "stable";' > /etc/apt/apt.conf.d/local`
+# man 5 apt_preferences
+# apt-cache policy
+
+# --------------------------------------------------------------------------}}}
+
+# !!!stable/unstable!!! ----------------------------------------------------{{{
+
+# stable -------------------------------------------------------------------{{{
+
+# 默认使用stable内的软件版本
+#Package: *
+#Pin: release a=stable
+#Pin-Priority: 990
+
+# --------------------------------------------------------------------------}}}
+
+# --------------------------------------------------------------------------{{{
+
+# 手动安装unstable软件版本且不随`apt upgrade`更新至更新的unstable版本
+#Package: *
+#Pin: release a=unstable
+#Pin-Priority: 99
+
+# `unstable`有新版本时更新
+#Pin-Priority: 500
+
+# --------------------------------------------------------------------------}}}
+
+# --------------------------------------------------------------------------}}}
+
+# !!!testing/unstable!!! ---------------------------------------------------{{{
+
+# --------------------------------------------------------------------------{{{
+
+# 默认使用testing内的软件版本
+#Package: *
+#Pin: release a=testing
+#Pin-Priority: 990
+
+# --------------------------------------------------------------------------}}}
+
+# --------------------------------------------------------------------------{{{
+
+# 手动安装unstable软件且不随unstable更新
+#Package: *
+#Pin: release a=unstable
+#Pin-Priority: 99
+
+# `unstable`有新版本时更新
+#Pin-Priority: 500
+
+# --------------------------------------------------------------------------}}}
+
+# --------------------------------------------------------------------------}}}
+
+# man 5 apt_preferences ----------------------------------------------------{{{
+
+# P >= 1000
+# causes a version to be installed even if this constitutes a downgrade of the package
+
+# 990 <= P < 1000
+# causes a version to be installed even if it does not come from the target release, unless the installed version is more recent
+
+# 500 <= P < 990
+# causes a version to be installed unless there is a version available belonging to the target release or the installed version is more recent
+
+# 100 <= P < 500
+# causes a version to be installed unless there is a version available belonging to some other distribution or the installed version is more recent
+
+# 0 < P < 100
+# causes a version to be installed only if there is no installed version of the package
+
+# P < 0
+# prevents the version from being installed
+
+# P = 0
+# has undefined behaviour, do not use it.
+
+# --------------------------------------------------------------------------}}}

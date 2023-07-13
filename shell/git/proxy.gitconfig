@@ -1,0 +1,8 @@
+# proxy.gitconfig
+
+# http代理，ssh代理通过`~/.ssh/config`配置，或者使用终端代理
+
+#[http]
+#    proxy = http://127.0.0.1:1080
+#[https]
+#    proxy = http://127.0.0.1:1080

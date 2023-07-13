@@ -1,0 +1,628 @@
+" Vimrc.local without plugins ----------------------------------------------{{{
+
+" 这是旧的vimrc的备份
+
+" Debian Vim Config (/etc/vim/vimrc)
+"runtime! debian.vim
+"if filereadable("/etc/vim/vimrc.local")
+"   source /etc/vim/vimrc.local
+"endif
+
+" Arch Vim Config (/etc/vimrc)
+"runtime! archlinux.vim
+
+" Dotfiles Editor Config
+"if filereadable("/dotfiles/editor/vimrc.local")
+"   source /dotfiles/editor/vimrc.local
+"endif
+
+" --------------------------------------------------------------------------}}}
+
+" Vim ----------------------------------------------------------------------{{{
+
+" unlet! skip_defaults_vim
+ru! defaults.vim                    " use defaults.vim
+set nomodeline                      " unsafe in the past
+set belloff=all                     " no bells
+set novisualbell                    " no flashing
+set shortmess=atToOI                " no intro message
+
+" --------------------------------------------------------------------------}}}
+
+" File ---------------------------------------------------------------------{{{
+
+filetype plugin indent on           " filetype auto recognize
+" Use `:e ++enc=utf-8 [filename]` to open file
+set encoding=utf-8
+" Use `:w ++enc=utf-8` to rewrite file
+set fileencodings=usc-bom,utf-8,default,utf-16,utf-16le,euc-cn,euc-tw,latin1
+" `:e ++enc=big5 %` `:w ++enc=gbk`
+
+" --------------------------------------------------------------------------}}}
+
+" Highlight ----------------------------------------------------------------{{{
+
+" set NONE background when VimEnter
+" use default color or use <LEADER>cb in vim
+"autocmd VimEnter * hi Normal ctermbg=NONE guibg=NONE
+set t_Co=256
+colorscheme default                 " default color is none bg
+set background=light
+syntax on
+" Highlight Tab and Space  default use SpecialKey :h listchars
+"hi MyTabSpace guifg=darkslategray ctermfg=darkgray
+"match MyTabSpace /\t\| /
+
+" --------------------------------------------------------------------------}}}
+
+" GUI ----------------------------------------------------------------------{{{
+
+if has("gui_running")
+    set guioptions-=e               " tabline
+    set guioptions-=m               " menu
+    set guioptions-=T               " Toolsbar
+    set guioptions-=r               " right-hand scrollbar
+    set guioptions-=L               " Left-hand scrollbar
+    set guioptions+=!               " terminal
+    set guioptions+=c               " console dialog
+    set guioptions+=P               " use register "+
+    set guifont=Fira\ Code\ 16
+    set guifontwide=Noto\ Sans\ Mono\ CJK\ SC\ 16
+    "set guifont=Fira_Code:h16
+    "set guifontwide=Sarasa_Term_SC:h16
+    set columns=90                  " default 80 or terminal width
+    set lines=30                    " default 24 or terminal height
+    "set iminsert=2                 "default 0
+endif
+
+" --------------------------------------------------------------------------}}}
+
+" move temporary files to a secure location(archlinux.vim) -----------------{{{
+
+if exists('$XDG_CACHE_HOME')
+    let &g:directory=$XDG_CACHE_HOME
+else
+    let &g:directory=$HOME . '/.cache'
+endif
+
+let &g:undodir=&g:directory . '/vim/undo//'
+let &g:backupdir=&g:directory . '/vim/backup//'
+let &g:directory.='/vim/swap//'
+
+" Create dirs if they doesn't exist
+if ! isdirectory(expand(&g:directory))
+    silent! call mkdir(expand(&g:directory), 'p', 0700)
+endif
+if ! isdirectory(expand(&g:undodir))
+    silent! call mkdir(expand(&g:undodir), 'p', 0700)
+endif
+if ! isdirectory(expand(&g:backupdir))
+    silent! call mkdir(expand(&g:backupdir), 'p', 0700)
+endif
+
+" --------------------------------------------------------------------------}}}
+
+" Session ------------------------------------------------------------------{{{
+
+" Use   :mksession [filename] to create session file &
+"       :source [filename] to source it.
+" Use   :wviminfo [filename] to save viminfo &
+"       :rviminfo [filename] to read it.
+" sessionoptions                    default: "blank,buffers,curdir,folds,
+"                                   help,options,tabpages,winsize,terminal"
+"set viminfofile=$HOME/.vimrc-local/viminfo
+" <C-o>     go to the older position or file
+" gi        go to the older position
+" <C-i>     go to the newer pos
+"set sessionoptions-=curdir          " the current directory
+"set sessionoptions+=sesdir          " session file located directory
+set sessionoptions+=slash           " \ --> /
+set sessionoptions+=unix            " Unix end-of-line format
+
+" --------------------------------------------------------------------------}}}
+
+" Read&Save ----------------------------------------------------------------{{{
+
+cmap w!! w !sudo tee >/dev/null %
+set autoread                        " default off
+set autowrite                       " auto save after CTRL-] :buffer .etc
+set autochdir                       " default off
+set confirm                         " no popup dialog
+set noswapfile                      " dont use for big files
+set writebackup                     " backup before overwriting a file
+set undofile                        " default off   undo history
+set backup                          " default off   backup file
+
+" --------------------------------------------------------------------------}}}
+
+" Clipboard ----------------------------------------------------------------{{{
+
+set clipboard=unnamed               " access system clipboard
+
+" --------------------------------------------------------------------------}}}
+
+" Indent&Space -------------------------------------------------------------{{{
+
+set autoindent                      " default off
+set smartindent                     " cindent indentexpr
+set shiftwidth=4                    " default 8
+set tabstop=4                       " default 8
+set softtabstop=4                   " default 8
+set expandtab                       " Use CTRL-V<Tab> to insert a real tab
+"set noexpandtab                    " Use :%retab! for others convenience
+set smarttab                        " default off
+set list                            " show tabs, trailing blanks .etc
+set listchars=tab:>-,trail:-,extends:>,precedes:<,nbsp:+    " space:.,eol:$
+
+" --------------------------------------------------------------------------}}}
+
+" Line ---------------------------------------------------------------------{{{
+
+"set cursorline
+set number                          " line number
+"set relativenumber                 " relative line number
+"set signcolumn=yes                 " default auto
+set wrap                            " default on
+set textwidth=0                     " default 0
+set nolinebreak                     " set nolinebreak in zh-CN
+set scrolloff=5                     " 5/999
+set colorcolumn=80                  " 80/120
+"set breakat+="！；：。，？"
+"set breakindent                    " wrapped line continue indented
+
+" --------------------------------------------------------------------------}}}
+
+" Completion ---------------------------------------------------------------{{{
+
+" <Tab>                 invoke completion
+" CTRL-P/CTRL-N         select previous/next match
+set wildmenu                        " enhanced completion
+set wildmode=list:longest,longest:full
+set wildignore+=*.o,*.obj,*.~,*.pyc
+set wildignore+=*/.git/*,*/.svn/*
+set showmatch                       " show matching brackets
+set matchpairs+=<:>
+set matchpairs+==:;                 " au Filetype c,cpp,java
+"set complete-=i                    " dont scan current and included files
+"set completeopt=menu,popup         " default menu,preview
+" :h ins-completion
+" CTRL-P/CTRL-N                     select previous/next match
+" i_CTRL-X_CTRL-L                   whole lines
+" i_CTRL-X_CTRL-N                   keywords in the current file
+" i_CTRL-X_CTRL-K                   keywords in the 'dictionary'
+" i_CTRL-X_CTRL-I                   keywords in the cur and included files
+" i_CTRL-X_CTRL-]                   tags
+" i_CTRL-X_CTRL-F                   file names and path
+" i_CTRL-X_CTRL-D                   definitions or macros
+" etc.
+
+" --------------------------------------------------------------------------}}}
+
+" Complete () [] {} <> -----------------------------------------------------{{{
+
+"function! ClosePair(char)
+"    if getline('.')[col('.') - 1] == a:char
+"        return "\<Right>"
+"    else
+"        return a:char
+"    endif
+"endfunction
+
+"inoremap ( ()<ESC>i
+"inoremap ) <C-r>=ClosePair(')')<CR>
+"inoremap [ []<ESC>i
+"inoremap ] <C-r>=ClosePair(']')<CR>
+"inoremap { {}<ESC>i
+"inoremap } <C-r>=ClosePair('}')<CR>
+"inoremap < <><ESC>i
+"inoremap > <C-r>=ClosePair('>')<CR>
+"inoremap ' ''<ESC>i
+"inoremap " ""<ESC>i
+
+" --------------------------------------------------------------------------}}}
+
+" Search -------------------------------------------------------------------{{{
+
+set hlsearch                        " :nohlsearch to clear
+set incsearch                       " search while typing
+set ignorecase                      " default off
+set smartcase                       " default off
+
+" --------------------------------------------------------------------------}}}
+
+" function! MyTabLine() ----------------------------------------------------{{{
+
+" List all the tab pages labels
+function! MyTabLine()
+    let s = ''
+    for i in range(tabpagenr('$'))
+        " select the highlighting
+        if i + 1 == tabpagenr()
+            let s .= '%#TabLineSel#'
+        else
+            let s .= '%#TabLine#'
+        endif
+        " set the tab page number
+        let s .= '[' . (i + 1) . ']'
+        " the label is made by MyTabLabel()
+        let s .= '[' . '%{MyTabLabel(' . (i + 1) . ')}' . '] '
+        "if (i+1) < tabpagenr('$')
+        "   let s .= ' | '
+        "endif
+    endfor
+    " after the last tab fill with TabLineFill and reset tab page nr
+    let s .= '%#TabLineFill#%T'
+    " right-align the label to close the current tab page
+    if tabpagenr('$') > 1
+        let s .= '%=%#TabLine#%999Xclose'
+    endif
+    return s
+endfunction
+
+"function! MyTabLabel(n)
+" Get each tab page label
+function! MyTabLabel(n)
+    let buflist = tabpagebuflist(a:n)
+    let winnr = tabpagewinnr(a:n)
+    let tailfname = fnamemodify(bufname(buflist[winnr - 1]), ':t')
+    return empty(tailfname) ? '[No Name]' : tailfname
+endfunction
+
+" TabLine
+"set showtabline=2                  " always show tabline, unnecessary
+set tabline=%!MyTabLine()
+" :tabs         List the tab pages
+" {count}gt     Go to tab page {count}
+" :tabp         tab previous
+" :tabn         tab next
+" :tabm [N]     Move the current tab page to after tab page N
+" :[range]tabd {cmd}
+
+" --------------------------------------------------------------------------}}}
+
+" Git info -----------------------------------------------------------------{{{
+
+"function! GitInfo()
+"    if exists("g:git_branch") && exists("g:git_status")
+"        return g:git_branch . g:git_status
+"    else
+"        return ''
+"    endif
+"endfunction
+"function! GetGitInfo()
+"    try
+"        let l:is_git_dir = system('bash -c "echo -n \"$(git rev-parse --is-inside-work-tree 2>/dev/null)\""')
+"        let g:git_branch = l:is_git_dir == 'true' ?
+"                    \ system('bash -c "echo -n \"[$(git rev-parse --abbrev-ref HEAD 2>/dev/null)]\""') : ''
+"        let g:git_status = l:is_git_dir == 'true' ?
+"                    \ system('bash -c "[[ -n \"$(git status --porcelain 2>/dev/null)\" ]] && echo -n \"[+]\""') : ''
+"    catch
+"        " Not allowed in restricted-mode
+"        echo "Error:" . v:exception
+"    endtry
+"endfunction
+
+" . shellescape(expand("%")) . "
+"autocmd BufEnter,FocusGained,BufWritePost * call GetGitInfo()
+
+" --------------------------------------------------------------------------}}}
+
+" Indent Info --------------------------------------------------------------{{{
+
+function! IndentInfo()
+    if &expandtab
+        return 'SPC:' . shiftwidth()
+    else
+        return 'TAB:' . shiftwidth()
+    endif
+endfunction
+
+" --------------------------------------------------------------------------}}}
+
+" StatusLine ---------------------------------------------------------------{{{
+
+set showcmd                         " show command in the last line
+set showmode                        " show message in the last line
+set ruler                           " show cursor position
+set laststatus=2                    " show statusline always
+set statusline=%#Start#%<
+set statusline+=%#BufferNumber#[%n]
+set statusline+=%#Mode#[%{mode()}]
+set statusline+=%#FileName#\ [%t]%h%m%r%w
+set statusline+=%#FileType#\ \ %y
+set statusline+=%#FileFormat#[%{&ff}]
+set statusline+=%#FileEncoding#[%{&fenc!=''?&fenc:&enc}]
+"set statusline+=%#Spelllang#[%{&spelllang}]
+"set statusline+=%#Hls#[%{&hls}]
+set statusline+=%#Register#[%{v:register}]
+set statusline+=%#Separation#%=
+"set statusline+=%#GitInfo#\ %{GitInfo()}
+set statusline+=%#IndentInfo#\ [%{IndentInfo()}]
+set statusline+=%#ModifiedTime#\ [%{strftime(\"%H:%M\ %y-%m-%d\",getftime(expand(\"%:p\")))}]
+set statusline+=%#ByteValue#\ [%b\ 0x%B]
+set statusline+=%#LocationPercentage#\ [%l\ %c%V\ %P]
+" Clear statusline bg (fg is bg, bg is fg)
+"hi StatusLine ctermfg=NONE guifg=NONE
+"hi StatusLineNC ctermfg=NONE guifg=NONE
+
+" --------------------------------------------------------------------------}}}
+
+" Fold ---------------------------------------------------------------------{{{
+
+set foldmethod=marker               " manual/indent/expr/marker/syntax/diff
+set nofoldenable                    " default on    all folds fold
+" zf/zF         Create fold [recursively]
+" zd/zD         Delete fold [recursively]
+" zo/zO         Open one/all folds under the cursor
+" zc/zC         Close one/all folds under the cursor
+" za/zA          Close <--> Open one/recursively
+" zv            View cursor line
+" zx/zX         Undo manually opend and closed folds
+" zm/zM         Fold more/all
+" zr/zR         Reduce folding/all
+" zn/zN         Fold none/normal
+" [z/]z         Move to the start/end of the current open fold
+" zj/zk         Move downwards/upwards to the start/end of the
+"               next/previous fold
+" More
+" zt            Redraw line at top of window
+" zb            Redraw line at bottom of window
+" zz            Redraw line at center of window
+" z<Right>      Move the view to the right
+" z<Left>       Move the view to the left
+
+" --------------------------------------------------------------------------}}}
+
+" Code Comment -------------------------------------------------------------{{{
+
+" Code Comment: V {j k} <C-v> I {// # "}
+" Code Uncomment: <C-v> {h j k l} {d x}
+
+" --------------------------------------------------------------------------}}}
+
+" Markdown -----------------------------------------------------------------{{{
+
+"set conceallevel=0                 " mei yong?
+let g:markdown_fenced_languages = ['c', 'cpp', 'python', 'sh', 'vim']
+
+" --------------------------------------------------------------------------}}}
+
+" Netrw --------------------------------------------------------------------{{{
+
+" :Lexplore to open dir in Left
+" :Texplore to open dir in new Tab or <LEADER>t
+" t         open new file in new Tab
+" Bookmarks
+" mb        mark bookmark           :NetrwMB [files/dirs]
+" qb        query bookmark
+" {cnt}gb   go to bookmark
+" {cnt}mB   delete bookmark         :NetrwMB! [files/dirs]
+" u         change to a earlier dir
+" U         change to a later dir
+let g:netrw_winsize=20              " 20% width
+" <i> to switch liststyle 0thin/1long/2wide/3tree
+let g:netrw_liststyle=3
+
+" --------------------------------------------------------------------------}}}
+
+" Print --------------------------------------------------------------------{{{
+
+" USE :TOhtml + firefox to print
+
+" --------------------------------------------------------------------------}}}
+
+" Regular Expressions ------------------------------------------------------{{{
+
+set magic                           " default on ! dont switch off
+" Replace
+" :s/old/new                        " replace first
+" :s/old/new/g                      " replace in line
+" :s/old/new/gc                     " replace in line and confirm
+" :%s/old/new/g                     " replace in file
+" :m,ns/old/new/g                   " replace in specil line
+" :'<, '>s/old/new/g                " replace in selection area
+" Some example
+" :%s/\s\+$//                       " clear whitespace
+" :s/\v<(.)(\w*)/\u\1\L\2/g         " first letter Uppercase :u t?
+" :s#^#//#g                         " Code Comment
+" :s#^//##g                         " Code Uncomment
+
+" --------------------------------------------------------------------------}}}
+
+" Tags ---------------------------------------------------------------------{{{
+
+"if has('path_extra')
+"    set tags+=./.tags;,.tags
+"endif
+" ctags universal-ctags
+" ctags -R -o .tags
+" <C-]> <C-o>
+
+" GTags (global)
+"set cscopetag
+"set cscopeprg='gtags-cscope'
+"let GtagsCscope_Auto_Load=1
+"let GtagsCscope_Auto_Map=1
+"let GtagsCscope_Quiet=1
+"let gtags_file=findfile("GTAGS", ";")
+"if !empty(gtags_file)
+"    exe "cs add" gtags_file
+"endif
+
+" --------------------------------------------------------------------------}}}
+
+" Map ----------------------------------------------------------------------{{{
+
+" Insert mode Move hjkl     Conflict
+inoremap <C-h> <left>
+inoremap <C-j> <down>
+inoremap <C-k> <up>
+inoremap <C-l> <right>
+
+" command-line mode move    Conflict
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
+cnoremap <C-f> <Left>
+cnoremap <C-b> <Right>
+
+" Map Leader
+let mapleader=" "
+
+" noremap: no recursion map
+" Save&Quit&Open&Read
+noremap <LEADER>w :w<CR>
+noremap <LEADER>q :q<CR>
+noremap <LEADER>e :e
+noremap <LEADER>r :r
+
+" Terminal NormalMode/Hide/(bash shortcut <C-d>)
+noremap <LEADER>t :tab terminal<CR>
+tnoremap <LEADER><ESC> <C-\><C-n>
+tnoremap <LEADER><C-h> <C-w>:hide<CR>
+tnoremap <LEADER><C-d> <C-w>:quit!<CR>
+
+" Search Next/Previous
+noremap <LEADER>= nzz
+noremap <LEADER>- Nzz
+
+" <C-c/v> --> <<LEADER>c-c/v>
+noremap <LEADER>cc "+y
+noremap <LEADER>cx "+x
+noremap <LEADER>cv "+p
+noremap <LEADER>ca ggVG
+
+" Clear/no whitespace CTRL-M/^M indent
+noremap <LEADER>cw :%s/\s\+$//g<CR>
+noremap <LEADER>cm :%s/<C-v><C-m>\+$//g<CR>
+noremap <LEADER>ci gg=G
+
+" Clear/no highlight
+noremap <LEADER>cl :nohlsearch<CR>
+
+" Clear/no background
+noremap <LEADER>cb :hi Normal ctermbg=NONE guibg=NONE<CR>
+
+" Session make/source
+noremap <LEADER>sm :mksession $HOME/.vimrc-local/session/
+noremap <LEADER>ss :source $HOME/.vimrc-local/session/
+
+" Split windows hjkl
+" Move to windows <CTRL-w>hjkl
+noremap <LEADER>sh :set nosplitright<CR>:vsplit<CR>
+noremap <LEADER>sj :set splitbelow<CR>:split<CR>
+noremap <LEADER>sk :set nosplitbelow<CR>:split<CR>
+noremap <LEADER>sl :set splitright<CR>:vsplit<CR>
+
+" Resize windows <CTRL-w><Up/Down/Left/Right>
+noremap <LEADER><Left> <C-w><
+noremap <LEADER><Right> <C-w>>
+noremap <LEADER><Up> <C-w>-
+noremap <LEADER><Down> <C-w>+
+
+" Diff
+" do diff obtain
+" dp diff put
+noremap <LEADER>dt :diffthis<CR>
+noremap <LEADER>do :diffoff<CR>
+
+" Tab (<Tab> or t)
+noremap <LEADER><Tab>t :tabs<CR>
+noremap <LEADER><Tab>. :Texplore<CR>
+noremap <LEADER><Tab>d :tabclose<CR>
+noremap <LEADER><Tab>e :tabedit %<CR>
+noremap <LEADER><Tab>n :tabnext<CR>
+noremap <LEADER><Tab>p :tabprevious<CR>
+noremap <LEADER><Tab>f :tabfirst<CR>
+noremap <LEADER><Tab>l :tablast<CR>
+noremap <LEADER><Tab>0 :tabonly<CR>
+noremap <LEADER><Tab>1 1gt
+noremap <LEADER><Tab>2 2gt
+noremap <LEADER><Tab>3 3gt
+noremap <LEADER><Tab>4 4gt
+noremap <LEADER><Tab>5 5gt
+noremap <LEADER><Tab>6 6gt
+noremap <LEADER><Tab>7 7gt
+noremap <LEADER><Tab>8 8gt
+noremap <LEADER><Tab>9 9gt
+
+" Buffer (\ or b)
+noremap <LEADER>\b :buffers<CR>
+noremap <LEADER>\d :bdelete<CR>
+noremap <LEADER>\n :bnext<CR>
+noremap <LEADER>\p :bprevious<CR>
+noremap <LEADER>\f :bfirst<CR>
+noremap <LEADER>\l :blast<CR>
+noremap <LEADER>\1 :b1<CR>
+noremap <LEADER>\2 :b2<CR>
+noremap <LEADER>\3 :b3<CR>
+noremap <LEADER>\4 :b4<CR>
+noremap <LEADER>\5 :b5<CR>
+noremap <LEADER>\6 :b6<CR>
+noremap <LEADER>\7 :b7<CR>
+noremap <LEADER>\8 :b8<CR>
+noremap <LEADER>\9 :b9<CR>
+
+" Go to
+noremap <LEADER>go <C-o>            " Go to older pos in jump list :jumps
+noremap <LEADER>gi <C-i>            " Go to newer pos in jump list :jumps
+noremap <LEADER>g; g;               " Go to older pos in change list :changes
+noremap <LEADER>g, g,               " Go to newer pos in change list :changes
+noremap <LEADER>gd gd               " Go to local declaration definition
+noremap <LEADER>gD gD               " Go to global declaration
+noremap <LEADER>gi                  " Go to implementations
+noremap <LEADER>gr                  " Go to references
+
+" Files (netrw)
+" noremap has no effect  only work in netrw
+"nmap <LEADER>fo t                   " File Open file in new tab
+"nmap <LEADER>fh qb                  " File History/bookmark
+"nmap <LEADER>fi qf                  " File Information
+"nmap <LEADER>fm mb                  " File Mark bookmark
+"nmap <LEADER>fb1 1gb                " File go to Bookmark 1
+"nmap <LEADER>fb2 2gb
+"nmap <LEADER>fb3 3gb
+"nmap <LEADER>fb4 4gb
+"nmap <LEADER>fb5 5gb
+"nmap <LEADER>fb6 6gb
+"nmap <LEADER>fd1 1mB                " File Delete bookmark 1
+"nmap <LEADER>fd2 2mB
+"nmap <LEADER>fd3 3mB
+"nmap <LEADER>fd4 4mB
+"nmap <LEADER>fd5 5mB
+"nmap <LEADER>fd6 6mB
+
+" --------------------------------------------------------------------------}}}
+
+" PackAdd ------------------------------------------------------------------{{{
+
+"packadd termdebug                   " :Termdebug vim
+
+" --------------------------------------------------------------------------}}}
+
+" Plugins    ---------------------------------------------------------------{{{
+
+" Plugin ale
+"let g:ale_linters_explicit = 1
+"let g:ale_completion_delay = 500
+"let g:ale_echo_delay = 20
+"let g:ale_lint_delay = 500
+"let g:ale_echo_msg_format = '[%linter%] %code: %%s'
+"let g:ale_lint_on_text_changed = 'normal'
+"let g:ale_lint_on_insert_leave = 1
+"let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
+"let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
+"let g:ale_c_cppcheck_options = ''
+"let g:ale_cpp_cppcheck_options = ''
+
+" Plugin ycm
+"let g:ycm_server_log_level = 'info'
+"let g:ycm_min_num_identifier_candidate_chars = 2
+"let g:ycm_collect_identifiers_from_comments_and_strings = 1
+"let g:ycm_complete_in_strings=1
+""let g:ycm_key_invoke_completion = '<c-z>'
+"let g:ycm_semantic_triggers =  {
+"            \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
+"            \ 'cs,lua,javascript': ['re!\w{2}'],
+"            \ }
+
+" --------------------------------------------------------------------------}}}

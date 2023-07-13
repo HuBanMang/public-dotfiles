@@ -1,0 +1,13 @@
+# gpg.gitconfig
+
+# commit sign
+# git config --global --unset gpg.format
+# git config --global user.signingkey <sec ID>
+# git config --global commit.gpgsign true
+# export GPG_TTY=$(tty)
+
+#[user]
+#    signingkey = ABC
+#
+#[commit]
+#    gpgsign = true

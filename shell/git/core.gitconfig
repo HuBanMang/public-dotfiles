@@ -1,0 +1,36 @@
+# core.gitconfig
+
+[core]
+    # 提交时转换CRLF为LF，签出时不转换
+    autocrlf = input
+    # 提交时转换CRLF为LF，签出时转换LF为CRLF
+    #autocrlf = true
+    # 是否记录文件执行权限
+    fileMode = false
+    # 是否区分大小写，默认区分，在FAT, NTFS等文件系统中默认不区分
+    #ignorecase = false
+    # 以转义字符显示异常字符，默认开启，但会转义中文，所以关闭
+    quotePath = false
+    # 默认为true，如果为false，符号链接将作为包含链接文本的小纯文件检出
+    symlinks = true
+
+# editor difftool
+[core]
+    editor = vim
+[diff]
+    tool = vimdiff
+
+# main master trunk
+[init]
+    defaultBranch = main
+
+# push
+[push]
+    autoSetupRemote = true
+
+# encoding utf-8
+[gui]
+    encoding = utf-8
+[i18n]
+    commitEncoding = utf-8
+    logOutputEncoding = utf-8

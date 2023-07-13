@@ -1,0 +1,37 @@
+# mirrors.USTC.edu.cn Mirror -----------------------------------------------{{{
+
+# Stable Stable-security ---------------------------------------------------{{{
+
+#deb https://mirrors.ustc.edu.cn/debian/ stable main contrib non-free non-free-firmware
+#deb https://mirrors.ustc.edu.cn/debian/ stable-updates main contrib non-free non-free-firmware
+#deb https://mirrors.ustc.edu.cn/debian/ stable-backports main contrib non-free non-free-firmware
+#deb https://mirrors.ustc.edu.cn/debian-security/ stable-security main contrib non-free non-free-firmware
+
+#deb-src https://mirrors.ustc.edu.cn/debian/ stable main contrib non-free non-free-firmware
+#deb-src https://mirrors.ustc.edu.cn/debian/ stable-updates main contrib non-free non-free-firmware
+#deb-src https://mirrors.ustc.edu.cn/debian/ stable-backports main contrib non-free non-free-firmware
+#deb-src https://mirrors.ustc.edu.cn/debian-security/ stable-security main contrib non-free non-free-firmware
+
+# --------------------------------------------------------------------------}}}
+
+# Testing Testing-security -------------------------------------------------{{{
+
+#deb https://mirrors.ustc.edu.cn/debian/ testing main contrib non-free non-free-firmware
+#deb https://mirrors.ustc.edu.cn/debian/ testing-updates main contrib non-free non-free-firmware
+#deb https://mirrors.ustc.edu.cn/debian-security/ testing-security main contrib non-free non-free-firmware
+
+#deb-src https://mirrors.ustc.edu.cn/debian/ testing main contrib non-free non-free-firmware
+#deb-src https://mirrors.ustc.edu.cn/debian/ testing-updates main contrib non-free non-free-firmware
+#deb-src https://mirrors.ustc.edu.cn/debian-security/ testing-security main contrib non-free non-free-firmware
+
+# --------------------------------------------------------------------------}}}
+
+# Unstable -----------------------------------------------------------------{{{
+
+#deb https://mirrors.ustc.edu.cn/debian/ unstable main contrib non-free non-free-firmware
+
+#deb-src https://mirrors.ustc.edu.cn/debian/ unstable main contrib non-free non-free-firmware
+
+# --------------------------------------------------------------------------}}}
+
+# --------------------------------------------------------------------------}}}

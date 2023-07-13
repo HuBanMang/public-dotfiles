@@ -1,0 +1,20 @@
+# lan.sshconfig
+
+Host localhost
+    Hostname 127.0.0.1
+    User git
+    PreferredAuthentications publickey,password
+    IdentityFile ~/.ssh/localhost
+
+Host lanhost
+    Hostname 10.0.0.10
+    User git
+    PreferredAuthentications publickey,password
+    IdentityFile ~/.ssh/lanhost
+
+Host lanhost-gitea
+    Hostname 10.0.0.10
+    User git
+    Port 10022
+    PreferredAuthentications publickey,password
+    IdentityFile ~/.ssh/lanhost-gitea

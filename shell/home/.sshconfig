@@ -1,0 +1,15 @@
+# .sshconfig
+
+# ~/.ssh/config
+
+Include ~/dotfiles/shell/ssh/lan.sshconfig
+Include ~/dotfiles/shell/ssh/wan.sshconfig
+
+#Host localhost
+#    Hostname localhost
+#    User git
+#    PreferredAuthentications publickey,password
+#    IdentityFile ~/.ssh/localhost
+#    ProxyCommand nc -X 5 -x 127.0.0.1:1080 %h %p
+
+# [custom]
